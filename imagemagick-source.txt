@@ -1,0 +1,17 @@
+# this is where we found the fantastic frog command
+
+http://python.devhelping.com/article/10261330/how+I+could+detect+this+circular+blob+using+imagemagick+or+another+language%3F
+
+try something like the following.
+convert and extract the chroma channel
+threshold and negate (invert)
+use connected-components labeling to filter out small regions
+use morphology open to smooth the boundary
+
+convert mpG7Z.png -colorspace HCL -channel g -separate +channel \
+    -threshold 18% -negate \
+    -define connected-components:mean-color=true \
+    -define connected-components:area-threshold=250 \
+    -connected-components 8 \
+    -morphology open octagon:4 \
+    result.png
