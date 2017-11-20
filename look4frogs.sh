@@ -14,14 +14,21 @@
 #
 # This script is called by a timer service
 
-# Is litoriCam awake?
+function createFrogLayer() {
+  convert pix/canhazfrogs.jpg -resize 500x500 -fx \
+  "hue>0.2 && hue<0.4 && saturation>0.2 && lightness>0.1 && lightness<0.9 ?1:0"\
+  -morphology Erode Octagon -despeckle pix/greenscreen.png
+}
+
+# Is litoriaCam awake?
 ping litoriacam  -c 4 1>/dev/null
 if [[ $? -eq 0 ]] ; then
-    #echo "I can see you"
-    curl litoriacam/image.jpg -o canhazfrogs.jpg
+    echo "I can see you"
+    curl litoriacam/image.jpg -o pix/canhazfrogs.jpg
+    createFrogLayer
+    greenPix=$(convert pix/greenscreen.png -format %c histogram:info:- |\
+     grep 000000 | awk '{print $1}' | sed 's/[^0-9]//g')
+    echo ${greenPix}
 else
     echo "No response from litoriacam"
 fi
-
-
-
