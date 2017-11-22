@@ -1,0 +1,11 @@
+[Unit]
+Description=take a frog photo
+
+[Timer]
+OnActiveSec=5min
+OnUnitActiveSec=10min
+#OnCalendar=*:*:00,30
+Unit=litoria.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,7 @@
+[Unit]
+Description=Look for frogs using litoriaCam
+
+[Service]
+Type=oneshot
+User=st33v
+ExecStart=-/usr/local/bin/look4frogs.sh
